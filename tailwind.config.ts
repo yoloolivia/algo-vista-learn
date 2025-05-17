@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,15 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				dsa: {
+					navy: '#1a365d',
+					teal: '#2c7a7b',
+					lightblue: '#90cdf4',
+					gray: '#e2e8f0',
+					success: '#48bb78',
+					warning: '#ed8936',
+					error: '#f56565',
 				}
 			},
 			borderRadius: {
@@ -84,11 +94,27 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'slide-in': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(0)' }
+				},
+				'array-item-highlight': {
+					'0%': { backgroundColor: 'hsla(var(--primary))' },
+					'50%': { backgroundColor: 'hsla(var(--primary), 0.5)' },
+					'100%': { backgroundColor: 'hsla(var(--primary))' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-in': 'slide-in 0.3s ease-out',
+				'array-highlight': 'array-item-highlight 1s infinite'
 			}
 		}
 	},
