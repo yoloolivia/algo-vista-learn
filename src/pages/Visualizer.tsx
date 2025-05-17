@@ -8,10 +8,11 @@ import { Slider } from '@/components/ui/slider';
 import { SortingVisualizer } from '@/components/visualizers/SortingVisualizer';
 import { ArrayVisualizer } from '@/components/visualizers/ArrayVisualizer';
 import { toast } from 'sonner';
-import { RefreshCcw, Play, Pause, SkipForward, RotateCcw, Shuffle } from 'lucide-react';
+import { Play, Pause, RotateCcw, Shuffle } from 'lucide-react';
 
 const Visualizer = () => {
   const [array, setArray] = useState<number[]>([]);
+  const [originalArray, setOriginalArray] = useState<number[]>([]);
   const [speed, setSpeed] = useState<number>(50);
   const [algorithm, setAlgorithm] = useState<string>('bubble');
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -23,6 +24,7 @@ const Visualizer = () => {
       newArray.push(Math.floor(Math.random() * 100) + 5);
     }
     setArray(newArray);
+    setOriginalArray([...newArray]);
     toast.success(`Generated new array with ${size} elements`);
   };
 
@@ -33,7 +35,6 @@ const Visualizer = () => {
   const handleStart = () => {
     setIsRunning(true);
     toast.info(`Starting ${getAlgorithmName(algorithm)} sort`);
-    // The actual sorting will be handled by the visualizer component
   };
 
   const handlePause = () => {
@@ -43,8 +44,14 @@ const Visualizer = () => {
 
   const handleReset = () => {
     setIsRunning(false);
+    setArray([...originalArray]);
+    toast.info("Reset array to original order");
+  };
+
+  const handleNewArray = () => {
+    setIsRunning(false);
     generateArray();
-    toast.info("Reset array and visualization");
+    toast.info("Generated new random array");
   };
 
   const handleAlgorithmChange = (value: string) => {
@@ -61,6 +68,107 @@ const Visualizer = () => {
       case 'merge': return 'Merge';
       case 'quick': return 'Quick';
       default: return 'Unknown';
+    }
+  };
+
+  // Algorithm code examples
+  const getAlgorithmCode = (algo: string): string => {
+    switch (algo) {
+      case 'bubble':
+        return `function bubbleSort(arr) {
+  const n = arr.length;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // Swap elements
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      }
+    }
+  }
+  return arr;
+}`;
+      case 'selection':
+        return `function selectionSort(arr) {
+  const n = arr.length;
+  for (let i = 0; i < n; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < n; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+    if (minIndex !== i) {
+      // Swap elements
+      [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+    }
+  }
+  return arr;
+}`;
+      case 'insertion':
+        return `function insertionSort(arr) {
+  const n = arr.length;
+  for (let i = 1; i < n; i++) {
+    const key = arr[i];
+    let j = i - 1;
+    while (j >= 0 && arr[j] > key) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    arr[j + 1] = key;
+  }
+  return arr;
+}`;
+      case 'merge':
+        return `function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+  
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+  
+  return merge(left, right);
+}
+
+function merge(left, right) {
+  const result = [];
+  let i = 0, j = 0;
+  
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      result.push(left[i++]);
+    } else {
+      result.push(right[j++]);
+    }
+  }
+  
+  return result.concat(left.slice(i), right.slice(j));
+}`;
+      case 'quick':
+        return `function quickSort(arr, low = 0, high = arr.length - 1) {
+  if (low < high) {
+    const pivotIndex = partition(arr, low, high);
+    quickSort(arr, low, pivotIndex - 1);
+    quickSort(arr, pivotIndex + 1, high);
+  }
+  return arr;
+}
+
+function partition(arr, low, high) {
+  const pivot = arr[high];
+  let i = low - 1;
+  
+  for (let j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      i++;
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+  
+  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+  return i + 1;
+}`;
+      default:
+        return '';
     }
   };
 
@@ -166,27 +274,23 @@ const Visualizer = () => {
                       ) : (
                         <Button onClick={handleStart}>
                           <Play className="h-4 w-4 mr-1" />
-                          Start
+                          {isRunning ? 'Continue' : 'Start'}
                         </Button>
                       )}
                       <Button variant="outline" onClick={handleReset}>
                         <RotateCcw className="h-4 w-4 mr-1" />
                         Reset
                       </Button>
-                      <Button variant="outline" onClick={() => generateArray()}>
+                      <Button variant="outline" onClick={handleNewArray}>
                         <Shuffle className="h-4 w-4 mr-1" />
                         New Array
-                      </Button>
-                      <Button variant="outline" onClick={() => setIsRunning(true)} disabled={isRunning}>
-                        <SkipForward className="h-4 w-4 mr-1" />
-                        Complete
                       </Button>
                     </div>
                   </div>
                 </div>
               </CardContent>
               <CardFooter className="flex-col items-start">
-                <h4 className="text-sm font-medium mb-2">About {getAlgorithmName(algorithm)} Sort</h4>
+                <h4 className="text-sm font-semibold mb-2">About {getAlgorithmName(algorithm)} Sort</h4>
                 <div className="bg-muted p-3 rounded-md text-sm w-full">
                   {algorithm === 'bubble' && (
                     <>
@@ -254,6 +358,11 @@ const Visualizer = () => {
                     </>
                   )}
                 </div>
+                
+                <h4 className="text-sm font-semibold mt-4 mb-2">Implementation Example</h4>
+                <div className="bg-muted p-3 rounded-md text-sm font-mono w-full overflow-x-auto">
+                  <pre>{getAlgorithmCode(algorithm)}</pre>
+                </div>
               </CardFooter>
             </Card>
           </TabsContent>
@@ -284,3 +393,4 @@ const Visualizer = () => {
 };
 
 export default Visualizer;
+

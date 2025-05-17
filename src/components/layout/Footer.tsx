@@ -116,7 +116,7 @@ const Footer = () => {
         
         <div className="mt-8 border-t border-gray-200 pt-6">
           <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} DSA Learn. All rights reserved.
+            &copy; {new Date().getFullYear()} <a href="https://www.linkedin.com/" className="text-dsa-teal hover:underline">Olivia Jardine</a>. All rights reserved.
           </p>
         </div>
       </div>

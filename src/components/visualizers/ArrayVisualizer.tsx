@@ -14,26 +14,32 @@ export const ArrayVisualizer: React.FC<ArrayVisualizerProps> = ({
   const maxValue = Math.max(...array, 1);
   
   return (
-    <div className="array-container">
-      {array.map((value, index) => {
-        // Calculate height as percentage of max value (5-100%)
-        const heightPercent = (value / maxValue) * 95 + 5;
-        
-        // Determine if this element is highlighted
-        const isHighlighted = highlightIndices.includes(index);
-        
-        return (
-          <div
-            key={index}
-            className={`array-item ${isHighlighted ? 'current' : ''}`}
-            style={{
-              height: `${heightPercent}%`,
-            }}
-          >
-            {array.length <= 30 ? value : ''}
-          </div>
-        );
-      })}
+    <div className="flex flex-col">
+      <div className="array-container">
+        {array.map((value, index) => {
+          // Calculate height as percentage of max value (5-100%)
+          const heightPercent = (value / maxValue) * 95 + 5;
+          
+          // Determine if this element is highlighted
+          const isHighlighted = highlightIndices.includes(index);
+          
+          return (
+            <div
+              key={index}
+              className={`array-item ${isHighlighted ? 'current' : ''}`}
+              style={{
+                height: `${heightPercent}%`,
+              }}
+            >
+              {array.length <= 30 ? value : ''}
+            </div>
+          );
+        })}
+      </div>
+      
+      <div className="mt-4 text-center text-sm text-gray-700">
+        <p>Array visualization</p>
+      </div>
     </div>
   );
 };
