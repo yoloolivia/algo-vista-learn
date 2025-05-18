@@ -46,33 +46,33 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 271 30% 10%;
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 272 30% 15%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 272 30% 15%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 201 75% 50%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 271 60% 50%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 187 66% 42%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 271 30% 20%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 271 30% 20%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 271 30% 20%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 271 30% 25%;
+    --input: 271 30% 25%;
+    --ring: 271 60% 50%;
     
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -103,29 +103,33 @@
 
 /* Custom styles for algorithm animations */
 .algorithm-container {
-  @apply w-full bg-white rounded-lg shadow-md p-4 overflow-hidden;
+  @apply w-full bg-card rounded-lg shadow-md p-4 overflow-hidden;
   min-height: 320px;
 }
 
 .array-container {
-  @apply flex justify-center items-end h-64 gap-1 mt-4;
+  @apply flex justify-center items-end h-64 gap-1 mt-4 relative;
 }
 
 .array-item {
-  @apply bg-dsa-lightblue border border-dsa-navy rounded-t-md flex justify-center items-center text-sm font-medium transition-all duration-300;
+  @apply bg-primary border border-border rounded-t-md flex justify-center items-center text-sm font-medium transition-all duration-300 relative;
   width: 40px;
 }
 
 .array-item.current {
-  @apply bg-dsa-teal text-white;
+  @apply bg-primary text-primary-foreground;
 }
 
 .array-item.compared {
-  @apply bg-dsa-warning;
+  @apply bg-secondary;
 }
 
 .array-item.sorted {
-  @apply bg-dsa-success;
+  @apply bg-accent text-accent-foreground;
+}
+
+.array-item.found {
+  @apply bg-[#4CAF50] text-white;
 }
 
 /* Progress bars */
@@ -134,7 +138,7 @@
 }
 
 .progress-bar {
-  @apply bg-dsa-teal h-2 rounded-full transition-all duration-300;
+  @apply bg-primary h-2 rounded-full transition-all duration-300;
 }
 
 /* Card hover effects */
